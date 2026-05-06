@@ -20,7 +20,7 @@ Project Overwatch includes deterministic scenarios that feel like real backend f
 Run:
 
 ```bash
-SCENARIO=retry-storm npm run demo
+SCENARIO=retry-storm npm run start:watchdog
 ```
 
 Each scenario should produce a postmortem with the same artifact shape, allowing repeatable evaluation.

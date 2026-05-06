@@ -9,5 +9,5 @@ STDOUT:
 STDERR:
 SyntaxError: Unexpected end of JSON input
     at JSON.parse (<anonymous>)
-    at parsePayload (C:/workspace/project-overwatch/target_app.js:15:24)
-    at main (C:/workspace/project-overwatch/target_app.js:40:7)
+    at parsePayload (C:/workspace/overwatch/target_app.js:15:24)
+    at main (C:/workspace/overwatch/target_app.js:40:7)

@@ -134,7 +134,7 @@ The live watchdog demo runs `target_app.js`, which deterministically crashes usi
 Example:
 
 ```bash
-SCENARIO=api-contract npm run demo
+SCENARIO=api-contract npm run start:watchdog
 ```
 
 Offline deterministic mode requires no API keys:
@@ -358,7 +358,7 @@ docker compose up --build overwatch-demo
 Optional Cursor command integration:
 
 ```bash
-CURSOR_AGENT_COMMAND="cursor-agent --stdin" npm run demo
+CURSOR_AGENT_COMMAND="cursor-agent --stdin" npm run start:watchdog
 ```
 
 Expected demo path:

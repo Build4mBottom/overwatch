@@ -48,6 +48,6 @@ diff --git a/target_app.js b/target_app.js
 
 ## Verification
 
-- [ ] Replay `SCENARIO=malformed-json npm run demo`.
+- [ ] Replay `SCENARIO=malformed-json npm run start:watchdog`.
 - [ ] Add contract tests for invalid JSON and missing required fields.
 - [ ] Confirm invalid payloads fail closed without process termination.

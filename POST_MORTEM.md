@@ -1,14 +1,14 @@
-# Incident Postmortem: ovw-20260506000000-offline-malformed-json
+# Incident Postmortem: ovw-20260506082632-malformed-json
 
 | Field | Value |
 | --- | --- |
-| Incident ID | `ovw-20260506000000-offline-malformed-json` |
+| Incident ID | `ovw-20260506082632-malformed-json` |
 | Severity | `SEV3` |
 | Status | `documented` |
-| Generated | `2026-05-06T08:20:20.911Z` |
-| Started | `2026-05-06T00:00:00.000Z` |
-| Ended | `2026-05-06T00:00:00.115Z` |
-| Duration | `115ms` |
+| Generated | `2026-05-06T08:26:32.254Z` |
+| Started | `2026-05-06T08:26:32.122Z` |
+| Ended | `2026-05-06T08:26:32.228Z` |
+| Duration | `104ms` |
 | Subsystem | `request-ingestion` |
 | Probable owner | API Platform / Runtime Ingestion |
 | Confidence | `83%` |
@@ -22,9 +22,9 @@ The monitored service crashed in subsystem request-ingestion due to payload_pars
 
 | Time | Event |
 | --- | --- |
-| `2026-05-06T00:00:00.000Z` | Watchdog launched monitored process |
-| `2026-05-06T00:00:00.115Z` | Process exited unexpectedly with code `1` |
-| `2026-05-06T08:20:20.911Z` | Overwatch generated persistent incident report |
+| `2026-05-06T08:26:32.122Z` | Watchdog launched monitored process |
+| `2026-05-06T08:26:32.228Z` | Process exited unexpectedly with code `1` |
+| `2026-05-06T08:26:32.254Z` | Overwatch generated persistent incident report |
 
 ## Runtime Context
 
@@ -32,7 +32,7 @@ The monitored service crashed in subsystem request-ingestion due to payload_pars
 - Scenario: `malformed-json`
 - Exit code: `1`
 - Signal: `none`
-- Duration: `115ms`
+- Duration: `104ms`
 - Node: `v24.13.1`
 - Platform: `win32`
 
@@ -52,7 +52,7 @@ SyntaxError: Unexpected end of JSON input
 
 - Exception type: SyntaxError
 - Failure class: payload_parse_failure
-- Failing files: C:/workspace/project-overwatch/target_app.js
+- Failing files: C:/Users/milnazaroor/Downloads/aiagent-job/target_app.js
 - Parser confidence: 95%
 
 ## Severity Classification
@@ -78,7 +78,7 @@ SyntaxError: Unexpected end of JSON input
 
 Rollback surface:
 
-- C:/workspace/project-overwatch/target_app.js
+- C:/Users/milnazaroor/Downloads/aiagent-job/target_app.js
 
 ## Retry Safety
 
@@ -132,7 +132,8 @@ diff --git a/target_app.js b/target_app.js
 
 ## Verification Steps
 
-- [ ] Replay deterministic scenario: SCENARIO=malformed-json npm run demo
+- [ ] Replay deterministic offline demo: npm run demo:offline
+- [ ] Replay live watchdog path: SCENARIO=malformed-json npm run start:watchdog
 - [ ] Run TypeScript build: npm run build
 - [ ] Inspect generated unified diff before applying any change
 
@@ -151,6 +152,13 @@ diff --git a/target_app.js b/target_app.js
 ```
 SyntaxError: Unexpected end of JSON input
     at JSON.parse (<anonymous>)
-    at parsePayload (C:/workspace/project-overwatch/target_app.js:15:24)
-    at main (C:/workspace/project-overwatch/target_app.js:40:7)
+    at parsePayload (C:\Users\milnazaroor\Downloads\aiagent-job\target_app.js:17:24)
+    at main (C:\Users\milnazaroor\Downloads\aiagent-job\target_app.js:47:7)
+    at Object.<anonymous> (C:\Users\milnazaroor\Downloads\aiagent-job\target_app.js:96:1)
+    at Module._compile (node:internal/modules/cjs/loader:1804:14)
+    at Object..js (node:internal/modules/cjs/loader:1936:10)
+    at Module.load (node:internal/modules/cjs/loader:1525:32)
+    at Module._load (node:internal/modules/cjs/loader:1327:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
 ```

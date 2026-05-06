@@ -1,8 +1,10 @@
 # Loom Walkthrough Script
 
+Target length: 2-3 minutes.
+
 ## Opening Hook
 
-"This is Project Overwatch. It is not an AI code generator. It is an AI-native incident commander. The input is simple: a backend process crashes. The output is an operationally actionable incident report with root cause, blast radius, severity, retry safety, patch proposal, rollback plan, and verification steps."
+"Modern engineering bottlenecks are no longer only implementation speed. They are operational recovery, incident triage, and the time it takes to understand a failure under pressure. This is Overwatch: an AI-native autonomous incident commander. The input is a backend process crash. The output is an operationally actionable incident report with root cause, blast radius, severity, retry safety, patch proposal, rollback plan, and verification steps."
 
 ## Frame The Problem
 
@@ -14,17 +16,30 @@
 
 ## Run The Demo
 
-"Now I will run the deterministic demo."
+"Now I will run the deterministic no-key demo. This proves the architecture without requiring the evaluator to configure secrets."
 
 ```bash
-npm run demo
+npm install
+npm run demo:offline
 ```
 
-"The target backend process starts, emits structured logs, and then deterministically crashes. Overwatch captures stdout, stderr, exit code, timestamps, Node version, platform, and the configured failure scenario."
+"The demo replays a realistic backend crash from `examples/sample_crash.log`. Overwatch captures stderr, parses the stack trace, scans local workspace context, classifies severity, estimates blast radius, and generates a persistent postmortem."
 
 ## Show Terminal Logs
 
-"Notice that no human copied logs into a chatbot. The incident was detected by the process watcher."
+"The important thing in the terminal is the operational sequence: watchdog start, stderr captured, stack trace parsed, severity classified, blast radius estimated, incident report generated. No human copied logs into a chatbot."
+
+Point at:
+
+```text
+[watchdog] replaying deterministic offline crash
+[telemetry] stderr captured
+[parser] stack trace parsed
+[classifier] severity=SEV3
+[blast-radius] subsystem=request-ingestion
+[analysis] generating incident report
+[output] POST_MORTEM.md generated
+```
 
 ## Show Crash Analysis
 
@@ -36,7 +51,7 @@ npm run demo
 
 Open `POST_MORTEM.md`.
 
-"The report includes executive summary, root cause, evidence, severity, blast radius, retry safety, regression warnings, read-only patch proposal, rollback plan, verification steps, and residual risk."
+"The report looks like a production incident document: incident ID, timestamps, severity, subsystem owner, confidence, timeline, evidence, blast radius, rollback risk, retry safety, read-only patch proposal, and verification checklist."
 
 ## Explain Safety
 
@@ -52,4 +67,4 @@ Open `POST_MORTEM.md`.
 
 ## Close
 
-"Project Overwatch is an AI-native incident commander that belongs inside a modern engineering organization. It turns a crash into a structured recovery artifact in seconds."
+"Overwatch is not trying to be another code-generation wrapper. It is operational triage acceleration. It turns a crash into a structured recovery artifact in seconds, and it keeps the human in control where production safety matters."

@@ -1,8 +1,8 @@
-# Project Overwatch One-Page Summary
+# Overwatch One-Page Summary
 
 ## What It Is
 
-Project Overwatch is an AI-native autonomous incident commander for backend/runtime crashes. It monitors a process, captures crash evidence, reconstructs local context, scores operational risk, proposes a safe patch, and writes a durable postmortem.
+Overwatch is an AI-native autonomous incident commander for backend/runtime crashes. It monitors a process, captures crash evidence, reconstructs local context, scores operational risk, proposes a safe patch, and writes a durable postmortem.
 
 ## Why It Matters
 
@@ -11,6 +11,19 @@ Modern AI tools make code generation cheap. Production reliability remains expen
 ## Input
 
 A backend process crashes.
+
+## Local Proof Command
+
+```bash
+npm install
+npm run demo:offline
+```
+
+Optional live watchdog path:
+
+```bash
+npm run start:watchdog
+```
 
 ## Autonomous Agent Path
 
@@ -49,3 +62,9 @@ Overwatch never auto-modifies production code. It generates patches as proposals
 ## Strategic Signal
 
 This project demonstrates priority definition ability. It chooses downtime reduction and operational decision quality over shallow AI demo spectacle.
+
+## Quest Fit
+
+- Public repo package: README, working TypeScript source, `.cursorrules`, `.env.example`, benchmark docs, Loom script, one-page summary, and appendix.
+- Demo proof: crash evidence becomes RCA, blast radius, severity, patch proposal, and `POST_MORTEM.md`.
+- Safety proof: no API key is required for offline demo; full AI/Cursor mode is optional.

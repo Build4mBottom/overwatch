@@ -4,7 +4,8 @@ import { clamp } from "./utils";
 export function assessRegressionRisk(crash: CrashAnalysis, workspace: WorkspaceContext): RegressionGuardAssessment {
   const warnings: string[] = [];
   const verificationSteps = [
-    `Replay deterministic scenario: SCENARIO=${crash.runtimeMetadata.scenario} npm run demo`,
+    `Replay deterministic offline demo: npm run demo:offline`,
+    `Replay live watchdog path: SCENARIO=${crash.runtimeMetadata.scenario} npm run start:watchdog`,
     "Run TypeScript build: npm run build",
     "Inspect generated unified diff before applying any change"
   ];
