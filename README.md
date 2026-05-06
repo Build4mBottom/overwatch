@@ -349,6 +349,14 @@ No-key offline proof:
 npm run demo:offline
 ```
 
+Local Loom dashboard:
+
+```bash
+npm run dashboard
+```
+
+Open [http://localhost:3000](http://localhost:3000). The dashboard is localhost-only and exposes only the predefined offline and watchdog demo commands.
+
 With Docker:
 
 ```bash

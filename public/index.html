@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Overwatch Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <p class="eyebrow">OVERWATCH</p>
+        <h1>AI-Native Autonomous Incident Commander</h1>
+        <div class="actions">
+          <button id="run-offline">Run Offline Demo</button>
+          <button id="run-watchdog">Run Watchdog Demo</button>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-label="Incident status">
+        <div><span id="dot-monitoring" class="dot"></span>Monitoring Runtime</div>
+        <div><span id="dot-incident" class="dot"></span>Incident Detected</div>
+        <div><span id="dot-rca" class="dot"></span>RCA Generated</div>
+      </section>
+
+      <section class="section terminal-section">
+        <div class="section-heading">
+          <span>1.</span>
+          <h2>Live Terminal Output</h2>
+          <small id="command-label">ready</small>
+        </div>
+        <pre id="terminal" aria-live="polite">[dashboard] ready
+[dashboard] run a demo to start the incident flow</pre>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <span>2.</span>
+          <h2>Incident Summary</h2>
+        </div>
+        <div class="summary-grid">
+          <div><span>Incident ID</span><strong id="incident-id">pending</strong></div>
+          <div><span>Severity</span><strong id="severity">pending</strong></div>
+          <div><span>Exception</span><strong id="exception">pending</strong></div>
+          <div><span>Subsystem</span><strong id="subsystem">pending</strong></div>
+          <div><span>Blast Radius</span><strong id="blast-radius">pending</strong></div>
+          <div><span>MTTR Estimate</span><strong id="mttr">pending</strong></div>
+          <div><span>Confidence Score</span><strong id="confidence">pending</strong></div>
+        </div>
+      </section>
+
+      <section class="two-column">
+        <div class="section">
+          <div class="section-heading">
+            <span>3.</span>
+            <h2>Root Cause Analysis</h2>
+          </div>
+          <pre id="rca">Run a demo to generate RCA.</pre>
+        </div>
+
+        <div class="section">
+          <div class="section-heading">
+            <span>4.</span>
+            <h2>Suggested Patch</h2>
+          </div>
+          <pre id="patch">Run a demo to generate a patch proposal.</pre>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <span>5.</span>
+          <h2>Verification Checklist</h2>
+        </div>
+        <ul id="checklist" class="checklist">
+          <li>Restart service</li>
+          <li>Validate payload parser</li>
+          <li>Run integration tests</li>
+          <li>Confirm no retry storm</li>
+        </ul>
+      </section>
+
+      <section class="section why">
+        <div class="section-heading">
+          <span>6.</span>
+          <h2>Why This Matters</h2>
+        </div>
+        <p>Overwatch reduces operational recovery time by autonomously reconstructing runtime context during backend incidents.</p>
+      </section>
+
+      <section class="section postmortem-section">
+        <div class="section-heading">
+          <h2>POST_MORTEM.md Viewer</h2>
+          <small>persistent artifact</small>
+        </div>
+        <pre id="postmortem">Loading postmortem...</pre>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

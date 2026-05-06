@@ -10,6 +10,7 @@
     "start:watchdog": "npm run build && node dist/runner.js",
     "demo": "npm run build && node dist/runner.js",
     "demo:offline": "npm run build && node dist/offline_demo.js",
+    "dashboard": "npm run build && node dist/dashboard_server.js",
     "validate": "npm run build && node dist/runner.js --dry-run",
     "target": "node target_app.js"
   },
@@ -24,7 +25,11 @@
   "author": "Project Overwatch",
   "license": "MIT",
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^20.12.12",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
