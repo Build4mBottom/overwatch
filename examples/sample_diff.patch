@@ -1,0 +1,18 @@
+diff --git a/target_app.js b/target_app.js
+--- a/target_app.js
++++ b/target_app.js
+@@
+-function parsePayload(raw) {
+-  const payload = JSON.parse(raw);
++function parsePayload(raw) {
++  let payload;
++  try {
++    payload = JSON.parse(raw);
++  } catch (error) {
++    throw new SyntaxError("Malformed request payload: expected valid JSON");
++  }
+   if (!payload.accountId || typeof payload.amountCents !== "number") {
+     throw new TypeError("API contract mismatch: accountId and amountCents are required");
+   }
+   return payload;
+ }

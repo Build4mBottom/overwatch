@@ -1,0 +1,10 @@
+services:
+  overwatch-demo:
+    build: .
+    environment:
+      SCENARIO: malformed-json
+      READ_ONLY_MODE: "true"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["node", "dist/runner.js"]

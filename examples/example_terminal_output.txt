@@ -1,0 +1,13 @@
+$ npm run demo
+
+> project-overwatch@1.0.0 demo
+> npm run build && node dist/runner.js
+
+{"ts":"2026-05-06T00:00:00.000Z","level":"info","component":"overwatch","message":"launching monitored process","command":"node","args":["target_app.js"],"scenario":"malformed-json"}
+{"ts":"2026-05-06T00:00:00.010Z","level":"info","service":"payments-api","scenario":"malformed-json","message":"target service booting"}
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at parsePayload (target_app.js:15:24)
+    at main (target_app.js:40:7)
+{"ts":"2026-05-06T00:00:00.120Z","level":"warn","component":"overwatch","message":"incident detected","exitCode":1,"durationMs":120}
+{"ts":"2026-05-06T00:00:00.180Z","level":"info","component":"overwatch","message":"postmortem generated","incidentId":"ovw-20260506000000-malformed-json","severity":"SEV3","tes":8089,"file":"POST_MORTEM.md"}

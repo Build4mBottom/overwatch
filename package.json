@@ -1,0 +1,30 @@
+{
+  "name": "project-overwatch",
+  "version": "1.0.0",
+  "description": "AI-native autonomous incident commander for runtime crash triage and postmortem generation.",
+  "type": "commonjs",
+  "main": "dist/runner.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/runner.js",
+    "start:watchdog": "npm run build && node dist/runner.js",
+    "demo": "npm run build && node dist/runner.js",
+    "demo:offline": "npm run build && node dist/offline_demo.js",
+    "validate": "npm run build && node dist/runner.js --dry-run",
+    "target": "node target_app.js"
+  },
+  "keywords": [
+    "incident-response",
+    "ai-native",
+    "cursor",
+    "reliability",
+    "postmortem",
+    "mttr"
+  ],
+  "author": "Project Overwatch",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  }
+}

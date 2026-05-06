@@ -1,0 +1,13 @@
+startedAt=2026-05-06T00:00:00.000Z
+endedAt=2026-05-06T00:00:00.115Z
+exitCode=1
+signal=none
+
+STDOUT:
+{"ts":"2026-05-06T00:00:00.010Z","level":"info","service":"payments-api","scenario":"malformed-json","message":"target service booting"}
+
+STDERR:
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at parsePayload (C:/workspace/project-overwatch/target_app.js:15:24)
+    at main (C:/workspace/project-overwatch/target_app.js:40:7)
