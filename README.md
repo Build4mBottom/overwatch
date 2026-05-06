@@ -1,5 +1,13 @@
 # Overwatch
 
+## Demo Video
+
+[Watch the Overwatch demo](https://www.loom.com/share/d726800595724e46b06b40906cbdce6f)
+
+## Live Dashboard Preview
+
+![Overwatch localhost dashboard preview](docs/dashboard-preview.png)
+
 ### AI-Native Autonomous Incident Commander
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-Production%20Grade-blue)
@@ -379,11 +387,9 @@ target_app.js crashes
   -> evaluator opens POST_MORTEM.md and sees RCA + patch
 ```
 
-## Demo Video
+## Loom Walkthrough
 
-[Watch the Overwatch demo](https://www.loom.com/share/d726800595724e46b06b40906cbdce6f)
-
-Loom script reference: [docs/LOOM_SCRIPT.md](docs/LOOM_SCRIPT.md).
+See [docs/LOOM_SCRIPT.md](docs/LOOM_SCRIPT.md).
 
 ## Repository Presentation
 
