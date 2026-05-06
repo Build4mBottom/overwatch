@@ -200,6 +200,12 @@ pre {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
+.three-column {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 #rca,
 #patch,
 #postmortem {
@@ -237,6 +243,111 @@ pre {
   padding: 20px 16px 24px;
 }
 
+.explain {
+  color: #dce7f3;
+  padding: 16px;
+}
+
+.explain p,
+.priority p {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.explain ul,
+.flow {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+.explain li,
+.flow li,
+.coverage-grid div {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+  padding: 10px 12px;
+}
+
+.flow {
+  counter-reset: flow;
+}
+
+.flow li {
+  counter-increment: flow;
+  position: relative;
+}
+
+.flow li::before {
+  color: var(--accent);
+  content: counter(flow, decimal-leading-zero);
+  font-family: Consolas, Monaco, monospace;
+  margin-right: 10px;
+}
+
+code {
+  color: var(--accent);
+  font-family: Consolas, Monaco, "Courier New", monospace;
+}
+
+.comparison {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.comparison th,
+.comparison td {
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  padding: 11px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.comparison th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.comparison td {
+  color: #dce7f3;
+  font-size: 14px;
+}
+
+.comparison th:last-child,
+.comparison td:last-child {
+  border-right: 0;
+}
+
+.coverage-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 16px;
+}
+
+.coverage-grid div::before {
+  color: var(--accent);
+  content: "OK";
+  font-family: Consolas, Monaco, monospace;
+  margin-right: 8px;
+}
+
+.priority p {
+  color: var(--accent);
+  font-size: clamp(18px, 2.4vw, 28px);
+  max-width: 1020px;
+  padding: 20px 16px 24px;
+}
+
 #postmortem {
   max-height: 58vh;
 }
@@ -251,8 +362,15 @@ pre {
   }
 
   .two-column,
-  .checklist {
+  .three-column,
+  .checklist,
+  .coverage-grid {
     grid-template-columns: 1fr;
+  }
+
+  .comparison {
+    display: block;
+    overflow-x: auto;
   }
 }
 
