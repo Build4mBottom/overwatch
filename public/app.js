@@ -22,6 +22,15 @@ const fields = {
   checklist: document.querySelector("#checklist")
 };
 
+const systemFields = {
+  build: document.querySelector("#sys-build"),
+  command: document.querySelector("#sys-command"),
+  incident: document.querySelector("#sys-incident"),
+  severity: document.querySelector("#sys-severity"),
+  generated: document.querySelector("#sys-generated"),
+  mode: document.querySelector("#sys-mode")
+};
+
 function setButtons(disabled) {
   buttons.forEach((button) => {
     button.disabled = disabled;
@@ -51,6 +60,28 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+function badge(pass) {
+  return `<span class="badge ${pass ? "pass" : "fail"}">${pass ? "PASS" : "FAIL"}</span>`;
+}
+
+function checkList(checks = []) {
+  return `<div class="check-list">${checks.map((check) => `
+    <div class="check-row">
+      ${badge(Boolean(check.pass))}
+      <span>${escapeHtml(check.label)}</span>
+      ${check.path ? `<code>${escapeHtml(check.path)}</code>` : ""}
+      ${check.detail ? `<small>${escapeHtml(check.detail)}</small>` : ""}
+    </div>
+  `).join("")}</div>`;
+}
+
+function sourceBlock(label, content) {
+  return `<div class="source-block">
+    <div class="source-label">${escapeHtml(label)}</div>
+    <pre>${escapeHtml(content || "No excerpt available.")}</pre>
+  </div>`;
+}
+
 function renderSummary(summary = {}) {
   fields.incidentId.textContent = summary.incidentId || "pending";
   fields.severity.textContent = summary.severity || "pending";
@@ -76,10 +107,96 @@ function renderPostmortem(payload = {}) {
   renderSummary(payload.summary || {});
 }
 
+function renderSystemStatus(status = {}) {
+  systemFields.build.textContent = status.buildStatus || "pending";
+  systemFields.command.textContent = status.lastDemoCommand || "pending";
+  systemFields.incident.textContent = status.lastIncidentId || "pending";
+  systemFields.severity.textContent = status.lastSeverity || "pending";
+  systemFields.generated.textContent = status.postmortemGeneratedAt || "pending";
+  systemFields.mode.textContent = status.dashboardMode || "localhost only";
+}
+
 async function refreshPostmortem() {
   const response = await fetch("/api/postmortem");
   if (!response.ok) return;
   renderPostmortem(await response.json());
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`${url} failed with HTTP ${response.status}`);
+  }
+  return response.json();
+}
+
+async function refreshEvidence() {
+  const [system, cursor, security, architecture, quest, benchmark] = await Promise.all([
+    fetchJson("/api/system-checks"),
+    fetchJson("/api/cursor-config"),
+    fetchJson("/api/security-checks"),
+    fetchJson("/api/architecture"),
+    fetchJson("/api/quest-checklist"),
+    fetchJson("/api/benchmark-evidence")
+  ]);
+
+  renderSystemStatus(system);
+  renderCursorConfig(cursor);
+  renderSecurityChecks(security);
+  renderArchitecture(architecture);
+  renderQuestChecklist(quest);
+  renderBenchmark(benchmark);
+}
+
+function renderCursorConfig(payload = {}) {
+  document.querySelector("#cursor-config").innerHTML = `
+    <div class="mode-line"><span>analysis mode</span><strong>${escapeHtml(payload.analysisMode || "pending")}</strong></div>
+    ${checkList(payload.checks)}
+    ${sourceBlock(".cursorrules first 20 lines", payload.excerpt)}
+  `;
+}
+
+function renderSecurityChecks(payload = {}) {
+  document.querySelector("#security-checks").innerHTML = checkList(payload.checks);
+}
+
+function renderArchitecture(payload = {}) {
+  document.querySelector("#architecture-flow").innerHTML = (payload.nodes || []).map((node, index) => `
+    <details class="arch-node">
+      <summary>
+        ${badge(Boolean(node.pass))}
+        <code>${escapeHtml(node.file)}</code>
+        <span>${escapeHtml(node.role)}</span>
+      </summary>
+      ${sourceBlock(`${node.file} excerpt`, node.excerpt)}
+    </details>
+    ${index < (payload.nodes || []).length - 1 ? `<div class="connector">-></div>` : ""}
+  `).join("");
+}
+
+function renderQuestChecklist(payload = {}) {
+  document.querySelector("#quest-checklist").innerHTML = checkList(payload.checks);
+}
+
+function renderBenchmark(payload = {}) {
+  document.querySelector("#benchmark-evidence").innerHTML = `
+    <div class="benchmark-strip">
+      <div><span>Triage Efficiency Score</span><strong>${escapeHtml(payload.triageEfficiencyScore || "pending")}</strong></div>
+      <div><span>Benchmark Doc</span><strong>${badge(Boolean(payload.benchmarkExists))} <code>${escapeHtml(payload.benchmarkPath || "docs/BENCHMARK.md")}</code></strong></div>
+    </div>
+    ${sourceBlock("docs/BENCHMARK.md calculation excerpt", payload.excerpt)}
+  `;
+
+  document.querySelector("#benchmark-table").innerHTML = `
+    <thead>
+      <tr><th>Metric</th><th>Default Cursor Workflow</th><th>Project Overwatch</th></tr>
+    </thead>
+    <tbody>
+      ${(payload.comparison || []).map((row) => `
+        <tr><td>${escapeHtml(row[0])}</td><td>${escapeHtml(row[1])}</td><td>${escapeHtml(row[2])}</td></tr>
+      `).join("")}
+    </tbody>
+  `;
 }
 
 function handleLogText(text) {
@@ -125,6 +242,7 @@ async function runDemo(kind) {
         }
         if (event.type === "postmortem") {
           renderPostmortem(event);
+          refreshEvidence().catch((refreshError) => append(`\n[dashboard] evidence refresh failed: ${refreshError.message}\n`));
           activate(dots.rca);
         }
         if (event.type === "error") {
@@ -143,4 +261,9 @@ async function runDemo(kind) {
 document.querySelector("#run-offline").addEventListener("click", () => runDemo("offline"));
 document.querySelector("#run-watchdog").addEventListener("click", () => runDemo("watchdog"));
 
-refreshPostmortem().catch(() => undefined);
+Promise.all([
+  refreshPostmortem(),
+  refreshEvidence()
+]).catch((error) => {
+  append(`\n[dashboard] ${error instanceof Error ? error.message : String(error)}\n`);
+});

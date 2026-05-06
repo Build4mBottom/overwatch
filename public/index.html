@@ -23,6 +23,21 @@
         <div><span id="dot-rca" class="dot"></span>RCA Generated</div>
       </section>
 
+      <section class="section">
+        <div class="section-heading">
+          <h2>Live System Status</h2>
+          <small>actual runtime artifact state</small>
+        </div>
+        <div class="summary-grid status-grid">
+          <div><span>Build Status</span><strong id="sys-build">pending</strong></div>
+          <div><span>Last Demo Command</span><strong id="sys-command">pending</strong></div>
+          <div><span>Last Incident ID</span><strong id="sys-incident">pending</strong></div>
+          <div><span>Last Severity</span><strong id="sys-severity">pending</strong></div>
+          <div><span>Postmortem Generated</span><strong id="sys-generated">pending</strong></div>
+          <div><span>Dashboard Mode</span><strong id="sys-mode">pending</strong></div>
+        </div>
+      </section>
+
       <section class="section terminal-section">
         <div class="section-heading">
           <span>1.</span>
@@ -92,115 +107,48 @@
         <div class="section">
           <div class="section-heading">
             <span>7.</span>
-            <h2>Cursor-Native Workflow</h2>
+            <h2>Cursor Configuration</h2>
           </div>
-          <div class="explain">
-            <p>Overwatch is designed as a Cursor-native operational workflow rather than a standalone script.</p>
-            <ul>
-              <li><code>.cursorrules</code> present</li>
-              <li>Cursor-ready workspace</li>
-              <li>Workspace-aware prompting</li>
-              <li><code>CURSOR_AGENT_COMMAND</code> support</li>
-              <li>Optional LLM/Cursor integration</li>
-              <li>Deterministic offline fallback mode</li>
-              <li>Runtime-context orchestration</li>
-            </ul>
-          </div>
+          <div class="evidence" id="cursor-config">Loading Cursor evidence...</div>
         </div>
 
         <div class="section">
           <div class="section-heading">
             <span>8.</span>
-            <h2>AI Agent Architecture</h2>
+            <h2>Security Checks</h2>
           </div>
-          <div class="explain">
-            <p>The system reconstructs runtime context automatically during backend failures.</p>
-            <ol class="flow">
-              <li>Runtime Watchdog</li>
-              <li>Crash Parser</li>
-              <li>Workspace Scanner</li>
-              <li>Severity Classifier</li>
-              <li>Blast Radius Analyzer</li>
-              <li>Prompt Builder</li>
-              <li>Incident Report Generator</li>
-              <li>Persistent <code>POST_MORTEM.md</code></li>
-            </ol>
-          </div>
+          <div class="evidence" id="security-checks">Loading security checks...</div>
         </div>
 
         <div class="section">
           <div class="section-heading">
-            <span>9.</span>
-            <h2>Security &amp; Safety Model</h2>
+            <span>11.</span>
+            <h2>Quest Checklist</h2>
           </div>
-          <div class="explain">
-            <p>Overwatch accelerates operational decision-making while preserving safety and human approval.</p>
-            <ul>
-              <li><code>.env</code> protected</li>
-              <li>No secrets committed</li>
-              <li>Read-only patch generation</li>
-              <li>No autonomous source mutation</li>
-              <li>Human approval required</li>
-              <li>Localhost-only dashboard</li>
-              <li>Deterministic replay support</li>
-            </ul>
-          </div>
+          <div class="evidence" id="quest-checklist">Loading quest checklist...</div>
         </div>
       </section>
 
       <section class="section">
         <div class="section-heading">
+          <span>8.</span>
+          <h2>Agent Architecture Evidence</h2>
+          <small>click a file to inspect source excerpt</small>
+        </div>
+        <div class="architecture-flow" id="architecture-flow">Loading architecture evidence...</div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
           <span>10.</span>
-          <h2>Benchmark vs Default Cursor</h2>
+          <h2>Benchmark Evidence</h2>
+          <small>methodology, not live production measurement</small>
         </div>
-        <table class="comparison">
-          <thead>
-            <tr>
-              <th>Metric</th>
-              <th>Default Cursor Workflow</th>
-              <th>Project Overwatch</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Triggering</td><td>Manual</td><td>Automatic process watcher</td></tr>
-            <tr><td>Context Gathering</td><td>Human copies logs</td><td>Structured telemetry capture</td></tr>
-            <tr><td>Workspace Awareness</td><td>Prompt-dependent</td><td>Scanner-driven</td></tr>
-            <tr><td>MTTR</td><td>~30 minutes</td><td>~15 seconds first-pass triage</td></tr>
-            <tr><td>Output Persistence</td><td>Manual</td><td><code>POST_MORTEM.md</code> and <code>crash.log</code></td></tr>
-            <tr><td>Operational Safety</td><td>Human discretion</td><td>Read-only patch generation</td></tr>
-            <tr><td>Blast Radius Analysis</td><td>Manual inference</td><td>Structured assessment</td></tr>
-            <tr><td>Severity Classification</td><td>Usually implicit</td><td>Explicit score and label</td></tr>
-            <tr><td>Persistent Artifacts</td><td>Ad hoc notes</td><td>Durable incident report</td></tr>
-            <tr><td>Human Cognitive Load</td><td>High</td><td>Low</td></tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="section coverage">
-        <div class="section-heading">
-          <span>11.</span>
-          <h2>Quest Requirements Coverage</h2>
+        <div class="benchmark-evidence" id="benchmark-evidence">Loading benchmark evidence...</div>
+        <div class="section-heading subheading">
+          <h2>Benchmark Methodology Table</h2>
         </div>
-        <div class="coverage-grid">
-          <div>Public GitHub agent</div>
-          <div>Cursor-ready setup</div>
-          <div><code>.cursorrules</code> included</div>
-          <div>Security-safe env config</div>
-          <div>Performance benchmark 1-10000</div>
-          <div>Benchmark vs Cursor/Claude</div>
-          <div>Problem specialization</div>
-          <div>Comprehensive documentation</div>
-          <div>Working runtime demo</div>
-          <div>Loom proof-of-work ready</div>
-        </div>
-      </section>
-
-      <section class="section priority">
-        <div class="section-heading">
-          <span>12.</span>
-          <h2>Priority Definition</h2>
-        </div>
-        <p>Execution speed is increasingly commoditized. Overwatch focuses AI on the higher-leverage bottleneck: reducing downtime, preserving operational memory, and lowering cognitive load during incidents.</p>
+        <table class="comparison" id="benchmark-table"></table>
       </section>
 
       <section class="section postmortem-section">
