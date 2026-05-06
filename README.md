@@ -379,9 +379,11 @@ target_app.js crashes
   -> evaluator opens POST_MORTEM.md and sees RCA + patch
 ```
 
-## Loom Walkthrough
+## Demo Video
 
-See [docs/LOOM_SCRIPT.md](docs/LOOM_SCRIPT.md).
+[Watch the Overwatch demo](https://www.loom.com/share/d726800595724e46b06b40906cbdce6f)
+
+Loom script reference: [docs/LOOM_SCRIPT.md](docs/LOOM_SCRIPT.md).
 
 ## Repository Presentation
 
