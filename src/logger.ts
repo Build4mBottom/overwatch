@@ -7,27 +7,28 @@ export interface Logger {
   info(message: string, fields?: Record<string, unknown>): void;
   warn(message: string, fields?: Record<string, unknown>): void;
   error(message: string, fields?: Record<string, unknown>): void;
+  step(component: string, message: string, fields?: Record<string, unknown>): void;
 }
 
-function write(level: LogLevel, message: string, fields: Record<string, unknown> = {}): void {
-  const line = {
-    ts: nowIso(),
-    level,
-    component: "overwatch",
-    message,
-    ...fields
-  };
-  const serialized = JSON.stringify(line);
-  if (level === "error" || level === "warn") {
-    console.error(serialized);
-  } else {
-    console.log(serialized);
+function formatFields(fields: Record<string, unknown> = {}): string {
+  const entries = Object.entries(fields).filter(([, value]) => value !== undefined && value !== "");
+  if (entries.length === 0) return "";
+  return ` ${entries.map(([key, value]) => `${key}=${JSON.stringify(value)}`).join(" ")}`;
+}
+
+function write(level: LogLevel, component: string, message: string, fields: Record<string, unknown> = {}): void {
+  const line = `[${component}] ${message}${formatFields({ ...fields, ts: nowIso(), level })}`;
+  if (level === "error") {
+    console.error(line);
+    return;
   }
+  console.log(line);
 }
 
 export const logger: Logger = {
-  debug: (message, fields) => write("debug", message, fields),
-  info: (message, fields) => write("info", message, fields),
-  warn: (message, fields) => write("warn", message, fields),
-  error: (message, fields) => write("error", message, fields)
+  debug: (message, fields) => write("debug", "debug", message, fields),
+  info: (message, fields) => write("info", "overwatch", message, fields),
+  warn: (message, fields) => write("warn", "incident", message, fields),
+  error: (message, fields) => write("error", "error", message, fields),
+  step: (component, message, fields) => write("info", component, message, fields)
 };

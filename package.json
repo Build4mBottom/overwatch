@@ -1,5 +1,5 @@
 {
-  "name": "project-overwatch",
+  "name": "overwatch",
   "version": "1.0.0",
   "description": "AI-native autonomous incident commander for runtime crash triage and postmortem generation.",
   "type": "commonjs",

@@ -45,11 +45,21 @@ async function main(): Promise<void> {
     platform: process.platform
   };
 
-  logger.info("running offline deterministic incident replay", { source: "examples/sample_crash.log" });
+  logger.step("watchdog", "replaying deterministic offline crash", { source: "examples/sample_crash.log" });
+  logger.step("telemetry", "stderr captured", { bytes: telemetry.stderr.length, firstLine: telemetry.stderr.split(/\r?\n/).find(Boolean) });
   const crash = parseCrash(telemetry);
+  logger.step("parser", "stack trace parsed", {
+    exception: crash.exceptionType,
+    failureClass: crash.failureClass,
+    failingFiles: crash.failingFiles.length
+  });
   const workspace = await scanWorkspace(crash, config);
+  logger.step("workspace", "local context scanned", { files: workspace.files.length });
   const scores = scoreIncident(crash, telemetry, workspace);
+  logger.step("classifier", `severity=${scores.severity.severity}`, { score: scores.severity.score });
+  logger.step("blast-radius", `subsystem=${crash.probableSubsystem}`, { score: scores.blastRadius.score });
   const prompt = buildPrompt(telemetry, crash, workspace, scores);
+  logger.step("analysis", "generating incident report", { mode: "deterministic-offline" });
   const agent = await invokeAgent(prompt, crash, scores, undefined);
 
   const report: IncidentReport = {
@@ -65,7 +75,7 @@ async function main(): Promise<void> {
 
   await fs.writeFile("crash.log", sample, "utf8");
   await writePostmortem(report);
-  logger.info("offline postmortem generated", {
+  logger.step("output", "POST_MORTEM.md generated", {
     incidentId: report.id,
     severity: scores.severity.severity,
     tes: scores.triageEfficiencyScore,

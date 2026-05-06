@@ -15,7 +15,7 @@ async function runTarget(): Promise<RuntimeTelemetry> {
   const config = loadConfig();
   const startedAt = nowIso();
   const startedMs = Date.now();
-  logger.info("launching monitored process", { command: config.targetCommand, args: config.targetArgs, scenario: config.scenario });
+  logger.step("watchdog", `monitoring ${config.targetArgs.join(" ")}`, { command: config.targetCommand, scenario: config.scenario });
 
   return new Promise((resolve, reject) => {
     const child = spawn(config.targetCommand, config.targetArgs, {
@@ -28,12 +28,13 @@ async function runTarget(): Promise<RuntimeTelemetry> {
     child.stdout.on("data", (chunk) => {
       const text = chunk.toString();
       stdout += text;
-      process.stdout.write(text);
+      for (const line of text.split(/\r?\n/).filter(Boolean)) {
+        console.log(`[target:stdout] ${line}`);
+      }
     });
     child.stderr.on("data", (chunk) => {
       const text = chunk.toString();
       stderr += text;
-      process.stderr.write(text);
     });
     child.on("error", reject);
     child.on("close", (exitCode, signal) => {
@@ -62,11 +63,12 @@ async function main(): Promise<void> {
   validateConfig(config);
 
   if (config.dryRun) {
-    logger.info("configuration validated", { config });
+    logger.step("config", "configuration validated", { readOnlyMode: config.readOnlyMode });
     return;
   }
 
   const telemetry = await runTarget();
+  logger.step("telemetry", "process completed", { exitCode: telemetry.exitCode, durationMs: telemetry.durationMs });
   await fs.writeFile("crash.log", [
     `startedAt=${telemetry.startedAt}`,
     `endedAt=${telemetry.endedAt}`,
@@ -81,15 +83,25 @@ async function main(): Promise<void> {
   ].join("\n"), "utf8");
 
   if (telemetry.exitCode === 0) {
-    logger.info("monitored process exited cleanly", { durationMs: telemetry.durationMs });
+    logger.step("watchdog", "monitored process exited cleanly", { durationMs: telemetry.durationMs });
     return;
   }
 
-  logger.warn("incident detected", { exitCode: telemetry.exitCode, durationMs: telemetry.durationMs });
+  logger.step("incident", "process exited unexpectedly", { exitCode: telemetry.exitCode });
+  logger.step("telemetry", "stderr captured", { bytes: telemetry.stderr.length, firstLine: telemetry.stderr.split(/\r?\n/).find(Boolean) });
   const crash = parseCrash(telemetry);
+  logger.step("parser", "stack trace parsed", {
+    exception: crash.exceptionType,
+    failureClass: crash.failureClass,
+    failingFiles: crash.failingFiles.length
+  });
   const workspace = await scanWorkspace(crash, config);
+  logger.step("workspace", "local context scanned", { files: workspace.files.length });
   const scores = scoreIncident(crash, telemetry, workspace);
+  logger.step("classifier", `severity=${scores.severity.severity}`, { score: scores.severity.score });
+  logger.step("blast-radius", `subsystem=${crash.probableSubsystem}`, { score: scores.blastRadius.score });
   const prompt = buildPrompt(telemetry, crash, workspace, scores);
+  logger.step("analysis", "generating incident report", { mode: config.cursorAgentCommand ? "cursor-agent" : "deterministic-offline" });
   const agent = await invokeAgent(prompt, crash, scores, config.cursorAgentCommand);
 
   const report: IncidentReport = {
@@ -104,7 +116,7 @@ async function main(): Promise<void> {
   };
 
   await writePostmortem(report);
-  logger.info("postmortem generated", {
+  logger.step("output", "POST_MORTEM.md generated", {
     incidentId: report.id,
     severity: scores.severity.severity,
     tes: scores.triageEfficiencyScore,

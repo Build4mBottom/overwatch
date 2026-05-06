@@ -2,6 +2,12 @@
 
 ### AI-Native Autonomous Incident Commander
 
+![TypeScript](https://img.shields.io/badge/TypeScript-Production%20Grade-blue)
+![AI-Native](https://img.shields.io/badge/AI--Native-Incident%20Response-black)
+![Cursor](https://img.shields.io/badge/Cursor-Native-purple)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-Operational-success)
+
 Reducing production MTTR from 30 minutes to 15 seconds through autonomous runtime-aware incident triage and root cause analysis.
 
 ## Executive Summary
@@ -91,30 +97,14 @@ That is what Overwatch implements.
 
 ## Architecture Overview
 
-```text
-target_app.js
-    |
-    v
-src/runner.ts
-    | captures stdout/stderr/exit/timestamps
-    v
-src/crash_parser.ts
-    | extracts exception, stack frames, failing files, subsystem
-    v
-src/workspace_scanner.ts
-    | reads related local files and config safely
-    v
-src/severity_classifier.ts + blast_radius.ts + retry_safety.ts
-    | estimates severity, ownership, retry risk, regression risk
-    v
-src/prompt_builder.ts
-    | builds Cursor-native FDE prompt with local context
-    v
-src/agent.ts
-    | invokes Cursor-compatible command or deterministic local analyzer
-    v
-src/postmortem_generator.ts
-    | writes POST_MORTEM.md and crash.log
+```mermaid
+flowchart TD
+    A["target_app.js<br/>backend process crashes"] --> B["runner.ts<br/>watchdog captures stderr, stdout, exit code"]
+    B --> C["crash_parser.ts<br/>extracts stack trace and failure class"]
+    C --> D["workspace_scanner.ts<br/>recovers local source context"]
+    D --> E["severity + blast radius + retry safety<br/>operational risk model"]
+    E --> F["agent.ts<br/>Cursor/LLM path or offline deterministic analysis"]
+    F --> G["POST_MORTEM.md<br/>RCA, patch, rollback, verification"]
 ```
 
 ## System Lifecycle
@@ -132,8 +122,8 @@ src/postmortem_generator.ts
 ## Runtime Flow
 
 ```bash
-git clone <your-repo>
-cd project-overwatch
+git clone https://github.com/Build4mBottom/overwatch.git
+cd overwatch
 npm install
 cp .env.example .env
 npm run start:watchdog
@@ -384,6 +374,10 @@ target_app.js crashes
 ## Loom Walkthrough
 
 See [docs/LOOM_SCRIPT.md](docs/LOOM_SCRIPT.md).
+
+## Repository Presentation
+
+The repo includes a dark social preview asset at [docs/social-preview.png](docs/social-preview.png) and a final polish checklist at [docs/REPO_POLISH.md](docs/REPO_POLISH.md). Suggested GitHub topics are included there for discoverability and evaluation polish.
 
 ## Design Decisions
 

@@ -6,16 +6,51 @@ function list(items: string[]): string {
   return items.map((item) => `- ${item}`).join("\n");
 }
 
+function checkboxes(items: string[]): string {
+  if (items.length === 0) return "- [ ] No verification steps generated";
+  return items.map((item) => `- [ ] ${item}`).join("\n");
+}
+
+function ownerForSubsystem(subsystem: string): string {
+  const owners: Record<string, string> = {
+    "request-ingestion": "API Platform / Runtime Ingestion",
+    payments: "Payments Platform",
+    workers: "Background Jobs",
+    "data-access": "Data Platform",
+    configuration: "Infrastructure / Runtime Configuration"
+  };
+  return owners[subsystem] || "Runtime Platform";
+}
+
 export function renderPostmortem(report: IncidentReport): string {
   const { telemetry, crash, scores, agent } = report;
   return `# Incident Postmortem: ${report.id}
 
-Generated: ${report.generatedAt}
-Phase: ${report.phase}
+| Field | Value |
+| --- | --- |
+| Incident ID | \`${report.id}\` |
+| Severity | \`${scores.severity.severity}\` |
+| Status | \`${report.phase}\` |
+| Generated | \`${report.generatedAt}\` |
+| Started | \`${telemetry.startedAt}\` |
+| Ended | \`${telemetry.endedAt}\` |
+| Duration | \`${telemetry.durationMs}ms\` |
+| Subsystem | \`${crash.probableSubsystem}\` |
+| Probable owner | ${ownerForSubsystem(crash.probableSubsystem)} |
+| Confidence | \`${Math.round(agent.confidence * 100)}%\` |
+| Triage Efficiency Score | \`${scores.triageEfficiencyScore}/10000\` |
 
 ## Executive Summary
 
 ${agent.executiveSummary}
+
+## Incident Timeline
+
+| Time | Event |
+| --- | --- |
+| \`${telemetry.startedAt}\` | Watchdog launched monitored process |
+| \`${telemetry.endedAt}\` | Process exited unexpectedly with code \`${telemetry.exitCode}\` |
+| \`${report.generatedAt}\` | Overwatch generated persistent incident report |
 
 ## Runtime Context
 
@@ -31,9 +66,13 @@ ${agent.executiveSummary}
 
 ${agent.probableRootCause}
 
-Failure class: \`${crash.failureClass}\`
-Probable subsystem: \`${crash.probableSubsystem}\`
-Parser confidence: \`${Math.round(crash.confidence * 100)}%\`
+| Signal | Value |
+| --- | --- |
+| Exception | \`${crash.exceptionType}\` |
+| Failure class | \`${crash.failureClass}\` |
+| Probable subsystem | \`${crash.probableSubsystem}\` |
+| Probable owner | ${ownerForSubsystem(crash.probableSubsystem)} |
+| Parser confidence | \`${Math.round(crash.confidence * 100)}%\` |
 
 ## Evidence
 
@@ -41,17 +80,23 @@ ${list(agent.evidence)}
 
 ## Severity Classification
 
-- Severity: \`${scores.severity.severity}\`
-- Score: \`${scores.severity.score}/100\`
+| Metric | Value |
+| --- | --- |
+| Severity | \`${scores.severity.severity}\` |
+| Score | \`${scores.severity.score}/100\` |
+| Confidence | \`${Math.round(agent.confidence * 100)}%\` |
 
 ${list(scores.severity.rationale)}
 
 ## Blast Radius
 
-- Score: \`${scores.blastRadius.score}/100\`
-- Affected components: ${scores.blastRadius.affectedComponents.join(", ") || "unknown"}
-- Affected user paths: ${scores.blastRadius.affectedUserPaths.join(", ") || "unknown"}
-- Dependencies: ${scores.blastRadius.dependencies.join(", ") || "none identified"}
+| Dimension | Assessment |
+| --- | --- |
+| Score | \`${scores.blastRadius.score}/100\` |
+| Affected components | ${scores.blastRadius.affectedComponents.join(", ") || "unknown"} |
+| Affected user paths | ${scores.blastRadius.affectedUserPaths.join(", ") || "unknown"} |
+| Dependencies | ${scores.blastRadius.dependencies.join(", ") || "none identified"} |
+| Rollback risk | \`${agent.patch.riskScore >= 70 ? "high" : agent.patch.riskScore >= 40 ? "medium" : "low"}\` |
 
 Rollback surface:
 
@@ -74,8 +119,11 @@ ${list(scores.regressionGuard.warnings)}
 
 ${agent.patch.summary}
 
-- Patch risk: \`${agent.patch.riskScore}/100\`
-- Patch confidence: \`${Math.round(agent.patch.confidence * 100)}%\`
+| Patch Signal | Value |
+| --- | --- |
+| Patch risk | \`${agent.patch.riskScore}/100\` |
+| Patch confidence | \`${Math.round(agent.patch.confidence * 100)}%\` |
+| Safety mode | Read-only proposal, human review required |
 
 \`\`\`diff
 ${agent.patch.unifiedDiff}
@@ -87,7 +135,7 @@ ${list(agent.rollbackPlan)}
 
 ## Verification Steps
 
-${list(agent.verificationSteps)}
+${checkboxes(agent.verificationSteps)}
 
 ## Residual Risk
 

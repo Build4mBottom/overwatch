@@ -1,0 +1,14 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1280" height="640" fill="#080B12"/>
+  <rect x="54" y="54" width="1172" height="532" rx="28" fill="#0D111A" stroke="#293241" stroke-width="2"/>
+  <path d="M90 150H1190" stroke="#1D2635" stroke-width="2"/>
+  <circle cx="106" cy="104" r="10" fill="#FF5F57"/>
+  <circle cx="142" cy="104" r="10" fill="#FFBD2E"/>
+  <circle cx="178" cy="104" r="10" fill="#28C840"/>
+  <text x="90" y="235" fill="#A7F3D0" font-family="Consolas, Monaco, monospace" font-size="30">[watchdog] incident detected</text>
+  <text x="90" y="307" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="92" font-weight="800">OVERWATCH</text>
+  <text x="94" y="374" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="600">AI-Native Autonomous Incident Commander</text>
+  <text x="94" y="446" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="32">Reducing production MTTR from 30 minutes to 15 seconds.</text>
+  <rect x="94" y="494" width="384" height="54" rx="8" fill="#111827" stroke="#334155"/>
+  <text x="118" y="531" fill="#60A5FA" font-family="Consolas, Monaco, monospace" font-size="24">crash -> RCA -> patch</text>
+</svg>

@@ -1,5 +1,15 @@
 # Incident Postmortem: ovw-sample-malformed-json
 
+| Field | Value |
+| --- | --- |
+| Incident ID | `ovw-sample-malformed-json` |
+| Severity | `SEV3` |
+| Status | `documented` |
+| Subsystem | `request-ingestion` |
+| Probable owner | API Platform / Runtime Ingestion |
+| Confidence | `83%` |
+| Triage Efficiency Score | `7729/10000` |
+
 ## Executive Summary
 
 The monitored service crashed in request ingestion due to malformed JSON parsing. First-pass severity is SEV3 because the failure is reproducible and request-path contained, but it still terminates the process.
@@ -15,6 +25,8 @@ Affected components:
 - request ingestion
 - payload validation
 - process availability for the target service
+
+Rollback risk: `low`
 
 ## Patch Proposal
 
@@ -36,6 +48,6 @@ diff --git a/target_app.js b/target_app.js
 
 ## Verification
 
-- Replay `SCENARIO=malformed-json npm run demo`.
-- Add contract tests for invalid JSON and missing required fields.
-- Confirm invalid payloads fail closed without process termination.
+- [ ] Replay `SCENARIO=malformed-json npm run demo`.
+- [ ] Add contract tests for invalid JSON and missing required fields.
+- [ ] Confirm invalid payloads fail closed without process termination.

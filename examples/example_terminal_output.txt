@@ -1,13 +1,16 @@
-$ npm run demo
+$ npm run demo:offline
 
-> project-overwatch@1.0.0 demo
-> npm run build && node dist/runner.js
+> overwatch@1.0.0 demo:offline
+> npm run build && node dist/offline_demo.js
 
-{"ts":"2026-05-06T00:00:00.000Z","level":"info","component":"overwatch","message":"launching monitored process","command":"node","args":["target_app.js"],"scenario":"malformed-json"}
-{"ts":"2026-05-06T00:00:00.010Z","level":"info","service":"payments-api","scenario":"malformed-json","message":"target service booting"}
-SyntaxError: Unexpected end of JSON input
-    at JSON.parse (<anonymous>)
-    at parsePayload (target_app.js:15:24)
-    at main (target_app.js:40:7)
-{"ts":"2026-05-06T00:00:00.120Z","level":"warn","component":"overwatch","message":"incident detected","exitCode":1,"durationMs":120}
-{"ts":"2026-05-06T00:00:00.180Z","level":"info","component":"overwatch","message":"postmortem generated","incidentId":"ovw-20260506000000-malformed-json","severity":"SEV3","tes":8089,"file":"POST_MORTEM.md"}
+> overwatch@1.0.0 build
+> tsc -p tsconfig.json
+
+[watchdog] replaying deterministic offline crash source="examples/sample_crash.log" ts="2026-05-06T08:18:18.080Z" level="info"
+[telemetry] stderr captured bytes=210 firstLine="SyntaxError: Unexpected end of JSON input" ts="2026-05-06T08:18:18.084Z" level="info"
+[parser] stack trace parsed exception="SyntaxError" failureClass="payload_parse_failure" failingFiles=1 ts="2026-05-06T08:18:18.085Z" level="info"
+[workspace] local context scanned files=22 ts="2026-05-06T08:18:18.103Z" level="info"
+[classifier] severity=SEV3 score=53 ts="2026-05-06T08:18:18.103Z" level="info"
+[blast-radius] subsystem=request-ingestion score=30 ts="2026-05-06T08:18:18.104Z" level="info"
+[analysis] generating incident report mode="deterministic-offline" ts="2026-05-06T08:18:18.104Z" level="info"
+[output] POST_MORTEM.md generated incidentId="ovw-20260506000000-offline-malformed-json" severity="SEV3" tes=7729 file="POST_MORTEM.md" ts="2026-05-06T08:18:18.107Z" level="info"
